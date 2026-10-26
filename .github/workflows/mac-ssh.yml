@@ -8,7 +8,5 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 360
     steps:
-      - name: Open SSH tunnel (tmate)
-        uses: mxschmitt/action-tunnel@v3
-        with:
-          limit-access-to-actor: true
+      - name: Open SSH session (upterm)
+        uses: owenthereal/action-upterm@v1
