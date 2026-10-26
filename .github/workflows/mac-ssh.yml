@@ -1,0 +1,25 @@
+name: mac-ssh
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ssh:
+    runs-on: macos-latest
+    timeout-minutes: 360
+    steps:
+      - name: Install tmate
+        run: brew install tmate
+
+      - name: Start SSH session
+        run: |
+          set -e
+          tmate -S /tmp/tmate.sock new-session -d
+          tmate -S /tmp/tmate.sock wait tmate-ready
+          echo "=================================================="
+          echo "SSH COMMAND (copy exactly):"
+          tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}'
+          echo "WEB URL:"
+          tmate -S /tmp/tmate.sock display -p '#{tmate_web}'
+          echo "=================================================="
+          tmate -S /tmp/tmate.sock attach
