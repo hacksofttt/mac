@@ -8,22 +8,7 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 360
     steps:
-      - name: Install tmate
-        run: brew install tmate
-
-      - name: Start SSH session
-        run: |
-          tmate -S /tmp/tmate.sock new-session -d
-          for i in $(seq 1 30); do
-            if tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}' 2>/dev/null | grep -q tmate.io; then
-              break
-            fi
-            sleep 2
-          done
-          echo "=================================================="
-          echo "SSH COMMAND (copy exactly):"
-          tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}'
-          echo "WEB URL:"
-          tmate -S /tmp/tmate.sock display -p '#{tmate_web}'
-          echo "=================================================="
-          tmate -S /tmp/tmate.sock attach
+      - name: Open SSH tunnel (tmate)
+        uses: mxschmitt/action-tunnel@v3
+        with:
+          limit-access-to-actor: true
