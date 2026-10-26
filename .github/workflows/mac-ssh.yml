@@ -13,9 +13,13 @@ jobs:
 
       - name: Start SSH session
         run: |
-          set -e
           tmate -S /tmp/tmate.sock new-session -d
-          tmate -S /tmp/tmate.sock wait tmate-ready
+          for i in $(seq 1 30); do
+            if tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}' 2>/dev/null | grep -q tmate.io; then
+              break
+            fi
+            sleep 2
+          done
           echo "=================================================="
           echo "SSH COMMAND (copy exactly):"
           tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}'
